@@ -1,5 +1,5 @@
 #! /usr/bin/python3
-# version: 0.1.1
+# version: 0.1.2
 
 import re
 import sys
@@ -41,7 +41,7 @@ class MainWindow(QWidget):
         self.treeProxyModel =  QSortFilterProxyModel(self)
         self.treeProxyModel.setSourceModel(self.sourceTreeData)
         self.treeProxyModel.setRecursiveFilteringEnabled(True)
-        self.__setFilterRegex("*")
+        self.__setFilterRegex(".*")
 
         self.ui.modelTypesTreeViewer.setModel(self.treeProxyModel)
 
@@ -57,7 +57,7 @@ class MainWindow(QWidget):
         return item
 
     def __setFilterRegex(self, pattern):
-        self.treeProxyModel.setFilterRegExp(QRegExp(pattern, Qt.CaseInsensitive, QRegExp.Wildcard))
+        self.treeProxyModel.setFilterRegExp(QRegExp(pattern, Qt.CaseInsensitive, QRegExp.RegExp))
 
     def __setTextData(self, index):
         sourceIndex = self.treeProxyModel.mapToSource(index)
