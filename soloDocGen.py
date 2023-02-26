@@ -1,9 +1,11 @@
 #! /usr/bin/python3
+# version: 0.1.1
 
 import re
 import sys
 import glob
 import treelib
+import argparse
 
 import slprint
 
@@ -95,8 +97,8 @@ def buildTreeFromDict(inputDict, root):
         slclear()
     return tree
 
-def getDictFromFolder(folder):
-    targetFiles = f"/home/ubuntu/initi/installation/305/core/{folder}/**/*.xxc"
+def getDictFromFolder(core, folder):
+    targetFiles = f"{core}/{folder}/**/*.xxc"
     filesList = glob.glob(targetFiles, recursive=True)
 
     modelTypeRegexPattern = r"(?P<comment>/\*\*\n( \*[^\n]*\n)* \*/\n)?ModelType[ ]+(?P<name>[\w\d_]+)\((@(?P<parent>[\w\d_]+))?\)"
@@ -119,12 +121,16 @@ def getDictFromFolder(folder):
     return modelTypes, documentation
 
 def main():
+    parser = argparse.ArgumentParser(description="")
+    parser.add_argument("-p", "--path", default="./", help="path to 'core' folder")
+    args = parser.parse_args()
+
     folders = "basic", "collectors", "datasources", "modelCatalog"
 
     modelTypes = {}
     documentation = {}
     for folder in folders:
-        folderModelTypes, folderDocumentation = getDictFromFolder(folder)
+        folderModelTypes, folderDocumentation = getDictFromFolder(args.path, folder)
         modelTypes.update(folderModelTypes)
         documentation.update(folderDocumentation)
 
